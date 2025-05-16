@@ -11,7 +11,7 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
-    repo: <YOUR_GITHUB_REPO>
+    repo: repo: https://github.com/brianpts/scraper
     rootDir: backend_app/playwright-seat-batching-working
     autoDeploy: true
 
