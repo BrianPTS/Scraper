@@ -1,7 +1,7 @@
-# Render deployment setup for both frontend and backend, including cron job for scheduled scraping
+# Render deployment setup for frontend, backend, and scheduled scraper
 
-# === Backend Service ===
 services:
+  # === Backend Service ===
   - type: web
     name: scraper-backend
     env: node
@@ -11,31 +11,31 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
-    repo: repo: https://github.com/brianpts/scraper
+    repo: https://github.com/brianpts/scraper
     rootDir: backend_app/playwright-seat-batching-working
     autoDeploy: true
 
-# === Frontend Service ===
+  # === Frontend Service ===
   - type: web
     name: scraper-frontend
     env: node
     plan: starter
     buildCommand: npm install
-    startCommand: npm run build && npx serve -s dist
+    startCommand: yarn build && yarn global add serve && serve -s dist
     envVars:
       - key: VITE_API_URL
         value: https://scraper-backend.onrender.com
-    repo: <YOUR_GITHUB_REPO>
+    repo: https://github.com/brianpts/scraper
     rootDir: frontend_app/scraper-frontend-main
     autoDeploy: true
 
-# === Cron Job: Run Scraper Every 5 Minutes ===
+  # === Cron Job: Run Scraper Every 5 Minutes ===
   - type: cron
     name: scheduled-scraper-job
     schedule: "*/5 * * * *"
     env: node
     buildCommand: npm install && npx playwright install
     startCommand: node app.js --mode=batch
-    repo: <YOUR_GITHUB_REPO>
+    repo: https://github.com/brianpts/scraper
     rootDir: backend_app/playwright-seat-batching-working
     autoDeploy: true
